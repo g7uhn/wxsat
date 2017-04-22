@@ -17,8 +17,8 @@ from PIL import Image
 
 # Also requires the python-wordpress-xmlrpc module to be installed e.g. '$ pip install python-wordpress-xmlrpc'
 
-# Set the following WordPress details (blog address for xmlrpc, user, password)
-wp = Client('http://alloutput.com/xmlrpc.php', 'wxsat_receiver', 'G7uhnWXSA')
+# Set the following WordPress details (blog address for xmlrpc, user, password... replace with your own details!)
+wp = Client('http://alloutput.com/xmlrpc.php', 'user', 'password')
 
 # Set the following sub-directories
 dir1 = "./recorded"
