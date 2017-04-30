@@ -15,9 +15,9 @@ from PIL import Image
 # On Raspbian/ Raspberry Pi 3, this script requires the following dependencies to be installed:
 # lsof, sox, wxtoimg (ARM version)
 
-# Also requires the python-wordpress-xmlrpc module to be installed e.g. '$ pip install python-wordpress-xmlrpc'
 
 ### Uncomment the "wp = Client..." line to use the example WordPress upload function!
+### Also requires the python-wordpress-xmlrpc module to be installed e.g. '$ sudo pip install python-wordpress-xmlrpc'
 ### Set the following WordPress details (blog address for xmlrpc, user, password, replace with your own details...)
 ##wp = Client('http://alloutput.com/xmlrpc.php', 'user', 'password')
 
