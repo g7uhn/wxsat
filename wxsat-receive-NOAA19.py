@@ -162,7 +162,7 @@ class HamlibHandler:
   def startRecording(self):
     timestr = datetime.now().strftime('%Y%m%d-%H%M%S')
 #    os.system("lxterminal --title=rtl_fm -e '/usr/local/bin/rtl_fm -d 0 -f 137620000 -M fm -s 40000 -g 40 -F 0 -A fast -E DC /home/pi/wxsat/recorded/NOAA-15-%s.raw' &" % timestr)
-    command = ("/usr/local/bin/rtl_fm -d 0 -f 137100000 -M fm -s 40000 -g 35 -F 0 -A fast -E DC /home/pi/wxsat/recorded/NOAA-19-%s.raw &" % timestr)
+    command = ("rtl_fm -d 0 -f 137100000 -M fm -s 40000 -g 35 -F 0 -A fast -E DC /home/pi/wxsat/recorded/NOAA-19-%s.raw &" % timestr)
     subprocess.Popen(command, shell=True)
     self.Reply(0)
 
