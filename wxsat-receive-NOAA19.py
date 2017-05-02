@@ -160,8 +160,8 @@ class HamlibHandler:
   # These are the handlers for each request
   
   def startRecording(self):
-    timestr = datetime.now().strftime('%Y%m%d-%H%M%S')
-    command = ("rtl_fm -d 0 -f 137100000 -M fm -s 40000 -g 35 -F 0 -A fast -E DC /home/pi/wxsat/recorded/NOAA-19-%s.raw &" % timestr)
+    timestr = datetime.now().strftime('%Y-%m-%d-%H%MZ')
+    command = ("rtl_fm -d 0 -f 137620000 -M fm -s 40000 -g 34 -F 0 -A fast -E DC /home/pi/wxsat/recorded/%s-NOAA-19.raw &" % timestr)
     subprocess.Popen(command, shell=True)
     self.Reply(0)
 
