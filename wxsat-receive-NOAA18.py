@@ -1,37 +1,28 @@
 #!/usr/bin/env python2
-#    This software is Copyright (C) 2012 by James C. Ahlstrom, and is
-#    free software: you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
-#
-#    You should have received a copy of the GNU General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-#  April 2017, Modified by Andy Webster G7UHN for control of rtl_fm recording based on GPredict's AOS and LOS outputs
+# This software is Copyright (C) 2012 by James C. Ahlstrom, and is
+# licensed for use under the GNU General Public License (GPL).
+# See http://www.opensource.org.
+# Note that there is NO WARRANTY AT ALL.  USE AT YOUR OWN RISK!!
+
+# Modified by A. Webster G7UHN for control of rtl_fm recording based on GPredict's AOS and LOS outputs
 
 import os
 import sys, time, socket, traceback, string
 import subprocess
 from datetime import datetime
 
-PORT = 7356        # Default port used by GQRX
+PORT = 7356
 
 timestr = "null"
 
 # This module creates a Hamlib TCP server that implements the rigctl protocol.  To start the server,
-# run "./wxsat-receive-XXXXXX.py" from a command line where "XXXXXX" is replaced by the relevant satellite designation.
-# To exit the server, type control-C.  Connect a client (e.g. GPredict) to the server using localhost and port 7356.
-# The TCP server will imitate a software defined radio, and you can get and set the frequency, etc.
-# The commands "AOS" and "LOS" have been added to cater for GPredict control of software to record satellite passes,
-# specifically starting and stopping an rtl_fm recording process.
+# run "python hamlibserver.py" from a command line.  To exit the server, type control-C.  Connect a
+# client to the server using localhost and port 7356 (GQRX default).  The TCP server will imitate a software defined
+# radio, and you can get and set the frequency, etc.
 
-# Only the commands dump_state, freq, mode, ptt, vfo, AOS and LOS are implemented.
+# Only the commands (freq, mode,) AOS and LOS are implemented... well, not quite true yet!
+
+
 
 class HamlibHandler:
   """This class is created for each connection to the server.  It services requests from each client"""
@@ -139,10 +130,10 @@ class HamlibHandler:
       self.Handlers.get(self.cmd, self.UnImplemented)()
 
 
-    elif 'AOS' in cmd:                  # AOS/LOS mods start here!
+    elif 'AOS' in cmd:                          # AOS/LOS mods start here!
         timestr = datetime.now().strftime('%Y%m%d-%H%M%S')
         print ('AOS received at ' + timestr)
-        self.startRecording()
+        self.startRecording()      # Maybe try direct call to subprocess here?
 
     elif 'LOS' in cmd:
         timestr = datetime.now().strftime('%Y%m%d-%H%M%S')

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Place script in /etc/cron.daily to be run once every day
+# Ensure there is no dot in the script filename (otherwise cron will not run it!)
+
+find /home/pi/wxsat/archived-recordings/ -type f -mtime +20 -delete
+find /home/pi/wxsat/archived-images/ -type f -mtime +20 -delete

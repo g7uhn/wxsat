@@ -15,11 +15,10 @@ from PIL import Image
 # On Raspbian/ Raspberry Pi 3, this script requires the following dependencies to be installed:
 # lsof, sox, wxtoimg (ARM version)
 
+# Also requires the python-wordpress-xmlrpc module to be installed e.g. '$ pip install python-wordpress-xmlrpc'
 
-### Uncomment the "wp = Client..." line to use the example WordPress upload function!
-### Also requires the python-wordpress-xmlrpc module to be installed e.g. '$ sudo pip install python-wordpress-xmlrpc'
-### Set the following WordPress details (blog address for xmlrpc, user, password, replace with your own details...)
-##wp = Client('http://alloutput.com/xmlrpc.php', 'user', 'password')
+# Set the following WordPress details (blog address for xmlrpc, user, password)
+wp = Client('http://alloutput.com/xmlrpc.php', 'wxsat_receiver', 'G7uhnWXSA')
 
 # Set the following sub-directories
 dir1 = "./recorded"
@@ -99,40 +98,39 @@ while True:
             
             if im.size[1] > 1000:          # if image height is >1000px then publish it (avoids very short, low passes being published)
 
-##            #----WordPress stuff starts here------
-##            #----(Uncomment section to enable)----
-##            # This section publishes the basic image to my WordPress site
-##                        
-##                # ...prepare metadata for the image...
-##                data = {
-##                    'name': ('%s.jpg' % basefilename),
-##                    'type': 'image/jpg',
-##                }
-##            
-##                # ...read the binary file and let the XMLRPC library encode it into base64
-##                with open(imagefile, 'rb') as img:
-##                    data['bits'] = xmlrpc_client.Binary(img.read())
-##
-##                response = wp.call(media.UploadFile(data))
-##                attachment_url = response['url']
-##                attachment_id = response['id']
-##            
-##                # get system uptime
-##                with open('/proc/uptime', 'r') as f:
-##                    uptime_seconds = float(f.readline().split()[0])
-##                    uptime_string = str(timedelta(seconds = uptime_seconds))
-##            
-##                # ...construct and publish the post
-##                post = WordPressPost()
-##                post.title = basefilename
-##                post.content = ('<a href="%s"><img class="alignright size-large wp-image-1381" src="%s" alt="" width="960" height="852" /></a><br><p>System uptime is %s</p>' % (attachment_url, attachment_url, uptime_string))
-##                post.post_status = 'publish'
-##                post.terms_names = {
-##                    'category': ['WXSAT-auto']
-##                    }
-##                wp.call(NewPost(post))
-##                print('New post uploaded', str(datetime.now()))    
-##            #-----WordPress stuff stops here-----
+            #----WordPress stuff starts here------
+            #(publish the basic image to my WordPress site)
+                        
+                # ...prepare metadata for the image...
+                data = {
+                    'name': ('%s.jpg' % basefilename),
+                    'type': 'image/jpg',
+                }
+            
+                # ...read the binary file and let the XMLRPC library encode it into base64
+                with open(imagefile, 'rb') as img:
+                    data['bits'] = xmlrpc_client.Binary(img.read())
+
+                response = wp.call(media.UploadFile(data))
+                attachment_url = response['url']
+                attachment_id = response['id']
+            
+                # get system uptime
+                with open('/proc/uptime', 'r') as f:
+                    uptime_seconds = float(f.readline().split()[0])
+                    uptime_string = str(timedelta(seconds = uptime_seconds))
+            
+                # ...construct and publish the post
+                post = WordPressPost()
+                post.title = basefilename
+                post.content = ('<a href="%s"><img class="alignright size-large wp-image-1381" src="%s" alt="" width="960" height="852" /></a><br><p>System uptime is %s</p>' % (attachment_url, attachment_url, uptime_string))
+                post.post_status = 'publish'
+                post.terms_names = {
+                    'category': ['WXSAT-auto']
+                    }
+                wp.call(NewPost(post))
+                print('New post uploaded', str(datetime.now()))    
+            #-----WordPress stuff stops here-----
 
                 # copy the new image to the display folder
                 os.system("rm ./display/*.jpg")         # remove previous image(s) from the display folder
